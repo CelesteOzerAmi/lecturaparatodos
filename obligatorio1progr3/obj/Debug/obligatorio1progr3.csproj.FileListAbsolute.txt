@@ -5,3 +5,10 @@ C:\Users\celes\source\repos\obligatorio1progr3\obligatorio1progr3\obj\Debug\obli
 C:\Users\celes\source\repos\obligatorio1progr3\obligatorio1progr3\obj\Debug\obligatorio1progr3.csproj.CoreCompileInputs.cache
 C:\Users\celes\source\repos\obligatorio1progr3\obligatorio1progr3\obj\Debug\obligatorio1progr3.exe
 C:\Users\celes\source\repos\obligatorio1progr3\obligatorio1progr3\obj\Debug\obligatorio1progr3.pdb
+C:\Users\celes\Source\Repos\lecturaparatodos\obligatorio1progr3\bin\Debug\obligatorio1progr3.exe.config
+C:\Users\celes\Source\Repos\lecturaparatodos\obligatorio1progr3\bin\Debug\obligatorio1progr3.exe
+C:\Users\celes\Source\Repos\lecturaparatodos\obligatorio1progr3\bin\Debug\obligatorio1progr3.pdb
+C:\Users\celes\Source\Repos\lecturaparatodos\obligatorio1progr3\obj\Debug\obligatorio1progr3.csproj.AssemblyReference.cache
+C:\Users\celes\Source\Repos\lecturaparatodos\obligatorio1progr3\obj\Debug\obligatorio1progr3.csproj.CoreCompileInputs.cache
+C:\Users\celes\Source\Repos\lecturaparatodos\obligatorio1progr3\obj\Debug\obligatorio1progr3.exe
+C:\Users\celes\Source\Repos\lecturaparatodos\obligatorio1progr3\obj\Debug\obligatorio1progr3.pdb
