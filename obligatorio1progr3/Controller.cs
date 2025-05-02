@@ -8,6 +8,7 @@ namespace obligatorio1progr3
 {
     public class Controller
     {
+        #region books
         private static List<Book> mListBooks = new List<Book>();
 
         public List<Book> ListBooks()
@@ -17,11 +18,25 @@ namespace obligatorio1progr3
             return mListBooks;
         }
 
+        public Book FindBook(int id)
+        {
+            foreach(Book book in mListBooks)
+            {
+                if(book.Id == id) 
+                    return book;
+            }
+            return null;
+        }
 
         public bool CreateBook()
         {
             Console.WriteLine("Id:");
             int id = int.Parse(Console.ReadLine());
+
+            if(FindBook(id) != null)
+            {
+                return false;
+            }
 
             Console.WriteLine("Título:");
             string title = Console.ReadLine();
@@ -52,6 +67,19 @@ namespace obligatorio1progr3
             return true;
         }
 
-       
-}
+        public bool DeleteBook(int id)
+        {
+            foreach(Book book in mListBooks)
+            {
+                if(book.Id == id)
+                {
+                    mListBooks.Remove(book);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        #endregion
+    }
 }
