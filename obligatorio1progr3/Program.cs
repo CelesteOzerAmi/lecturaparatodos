@@ -8,16 +8,32 @@ namespace obligatorio1progr3
 {
     public class Program
     {
+
         static void Main(string[] args)
         {
-
-            bool switchLoop = true;
-            while (switchLoop)
+            bool switchInLoop = true;
+            string initialWelcome = "Bienvenido. Seleccione una opción para comenzar: ";
+            string initialOptions = "1: Usuarios | 2: Libros | 3: Sucursales | 4: Otros | ";
+            string basicOptions = "0: Inicio | 9: Salir";
+            
+            bool Options(int opt)
             {
+                if(opt.GetType() != typeof(int))
+                {
+                    Console.WriteLine("Opción inválida");
+                    switchInLoop = true;
+                }
+                if (opt == 9)
+                {
+                    Console.WriteLine("Gracias por utilizar nuestro sistema :)");
+                    switchInLoop = false;
+                }
+                return switchInLoop;
+            }
 
-                string initialWelcome = "Bienvenido. Seleccione una opción para comenzar: ";
-                string initialOptions = "1: Usuarios | 2: Libros | 3: Sucursales | 4: Otros";
-                string basicOptions = " | 0: Inicio | 9: Salir";
+            while (switchInLoop)
+            {
+                
                 Console.WriteLine(initialWelcome);
                 Console.WriteLine(initialOptions + basicOptions);
 
@@ -30,13 +46,15 @@ namespace obligatorio1progr3
 
                     case 1:
                         Console.WriteLine("Usuarios");
-                        switchLoop = false;
+                        Console.WriteLine(basicOptions);
+                        int opt = int.Parse(Console.ReadLine());
+                        Options(opt);
                         break;
 
                     case 2:
                         Console.WriteLine("Libros");
                         Console.WriteLine("Seleccione una opción: ");
-                        Console.WriteLine("1: Ver libros | 2: Alta libro" + basicOptions);
+                        Console.WriteLine("1: Ver libros | 2: Alta libro | " + basicOptions);
                         int optionValue = int.Parse(Console.ReadLine());
 
                         Controller aController = new Controller();
@@ -48,8 +66,15 @@ namespace obligatorio1progr3
 
                             case 1:
                                 Console.WriteLine("Libros añadidos");
-                                Console.WriteLine(aController.ListBooks().ToString());
-                                switchLoop = false;
+                                List<Book> booksList = new List<Book>();
+                                booksList = aController.ListBooks();
+                                foreach (Book book in booksList)
+                                {
+                                    Console.WriteLine("'" + book.Title + "'. Autor: " + book.Author + ". Año: " + book.Year);
+                                }
+                                Console.WriteLine(basicOptions);
+                                opt = int.Parse(Console.ReadLine());
+                                Options(opt);
                                 break;
 
                             case 2:
@@ -75,16 +100,21 @@ namespace obligatorio1progr3
                                 Console.WriteLine("Estado:");
                                 string state = Console.ReadLine();
 
-                                Books abook = new Books(id, title, author, genre, year, subsidiary, state);
+                                Book abook = new Book(id, title, author, genre, year, subsidiary, state);
 
                                 aController.UploadBook(abook);
-                                Console.WriteLine(aController.ListBooks().ToString());
-
-                                switchLoop = false;
+                                booksList = aController.ListBooks();
+                                foreach (Book book in booksList)
+                                {
+                                    Console.WriteLine("'" + book.Title + "'. Autor: " + book.Author + ". Año: " + book.Year);
+                                }
+                                Console.WriteLine(basicOptions);
+                                opt = int.Parse(Console.ReadLine());
+                                Options(opt);
                                 break;
                             case 9:
                                 Console.WriteLine("Gracias por utilizar nuestro sistema :)");
-                                switchLoop = false;
+                                switchInLoop = false;
                                 break;
 
                             default:
@@ -96,17 +126,20 @@ namespace obligatorio1progr3
 
                     case 3:
                         Console.WriteLine("Sucursales");
-                        switchLoop = false;
+                        Console.WriteLine(basicOptions);
+                        opt = int.Parse(Console.ReadLine());
+                        Options(opt);
                         break;
 
                     case 4:
                         Console.WriteLine("Otros");
-                        switchLoop = false;
+                        opt = int.Parse(Console.ReadLine());
+                        Options(opt);
                         break;
 
                     case 9:
                         Console.WriteLine("Gracias por utilizar nuestro sistema :)");
-                        switchLoop = false;
+                        switchInLoop = false;
                         break;
 
                     default:

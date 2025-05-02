@@ -8,22 +8,21 @@ namespace obligatorio1progr3
 {
     public class Controller
     {
-        private static List<Books> mListBooks = new List<Books>();
+        private static List<Book> mListBooks = new List<Book>();
 
-        public List<Books> ListBooks()
+        public List<Book> ListBooks()
         {
+            Book lib = new Book(1, "La", "Canada", "Seca", 1999, "Mv", "Dis");
+            mListBooks.Add(lib);
             return mListBooks;
         }
 
-        public bool UploadBook(Books pBook)
+        public bool UploadBook(Book pBook)
         {
             mListBooks.Add(pBook);
             return true;
         }
 
-        #region books menu
-
-        
-    #endregion
+       
 }
 }

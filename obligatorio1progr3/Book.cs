@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace obligatorio1progr3
 {
-    public class Books
+    public class Book
     {
         private int _id;
         private string _title;
@@ -59,7 +59,7 @@ namespace obligatorio1progr3
         }
 
 
-        public Books(int pId, string pTitle, string pAuthor, string pGenre, int pYear, string pSubsidiary, string pState)
+        public Book(int pId, string pTitle, string pAuthor, string pGenre, int pYear, string pSubsidiary, string pState)
         {
             _id = pId;
             _title = pTitle;
