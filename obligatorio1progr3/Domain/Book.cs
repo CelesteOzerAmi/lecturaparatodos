@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace obligatorio1progr3
+namespace obligatorio1progr3.Domain
 {
     public class Book
     {
         private int _id;
         private string _title;
         private string _author;
-        private string _genre;
+        private Genre _genre;
         private int _year;
         private string _subsidiary;
         private string _state;
@@ -34,7 +34,7 @@ namespace obligatorio1progr3
             set { _author = value; }
         }
 
-        public string Genre
+        public Genre Genre
         {
             get { return _genre; }
             set { _genre = value; }
@@ -59,7 +59,7 @@ namespace obligatorio1progr3
         }
 
 
-        public Book(int pId, string pTitle, string pAuthor, string pGenre, int pYear, string pSubsidiary, string pState)
+        public Book(int pId, string pTitle, string pAuthor, Genre pGenre, int pYear, string pSubsidiary, string pState)
         {
             _id = pId;
             _title = pTitle;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace obligatorio1progr3
+namespace obligatorio1progr3.Domain
 {
     public class Genre
     {
