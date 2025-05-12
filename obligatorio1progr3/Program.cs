@@ -19,8 +19,11 @@ namespace obligatorio1progr3
             string initialOptions = "1: Usuarios | 2: Libros | 3: Géneros | 4: Sucursales | 5: Encargados | 6: Préstamos | ";
             string basicOptions = "0: Inicio | 9: Salir";
             
-            bool Options(int opt)
+            bool Options()
+                
             {
+                Console.WriteLine(basicOptions);
+                int opt = int.Parse(Console.ReadLine());
                 if(opt.GetType() != typeof(int))
                 {
                     Console.WriteLine("Opción inválida");
@@ -43,8 +46,6 @@ namespace obligatorio1progr3
                 Console.WriteLine(initialOptions + basicOptions);
 
                 int initialValue = int.Parse(Console.ReadLine());
-                int opt;
-
                 switch (initialValue)
                 {
                     case 0:
@@ -71,9 +72,8 @@ namespace obligatorio1progr3
                                 {
                                     Console.WriteLine($"Usuario {aclient.Id}: {aclient.Name}, {aclient.PhoneNumber}. Registrado en {aclient.Subsidiary.Name}");
                                 }
-                                Console.WriteLine(basicOptions);
-                                opt = int.Parse(Console.ReadLine());
-                                Options(opt);
+                                
+                                Options();
                                 break;
 
                             case 2:
@@ -83,9 +83,7 @@ namespace obligatorio1progr3
                                 {
                                     Console.WriteLine("Error. Intente nuevamente por favor.");
                                 }
-                                Console.WriteLine(basicOptions);
-                                opt = int.Parse(Console.ReadLine());
-                                Options(opt);
+                                Options();
                                 break;
 
                             case 3:
@@ -127,9 +125,7 @@ namespace obligatorio1progr3
                                 {
                                     Console.WriteLine($"{abook.Id}. '{abook.Title}', {abook.Author}. {abook.Year}. Estado: {abook.State}. Sucursal: {abook.Subsidiary.Name}");
                                 }
-                                Console.WriteLine(basicOptions);
-                                opt = int.Parse(Console.ReadLine());
-                                Options(opt);
+                                Options();
                                 break;
 
                             case 2:
@@ -139,27 +135,21 @@ namespace obligatorio1progr3
                                 {
                                     Console.WriteLine("Error. Intente nuevamente por favor.");
                                 }
-                                Console.WriteLine(basicOptions);
-                                opt = int.Parse(Console.ReadLine());
-                                Options(opt);
+                                Options();
                                 break;
 
                             case 3:
                                 Console.WriteLine("Modificar libro");
 
                                 aController.EditBook();
-                                Console.WriteLine(basicOptions);
-                                opt = int.Parse(Console.ReadLine());
-                                Options(opt);
+                                Options();
                                 break;
 
                             case 4:
                                 Console.WriteLine("Eliminar libro");
 
                                 aController.DeleteBook();
-                                Console.WriteLine(basicOptions);
-                                opt = int.Parse(Console.ReadLine());
-                                Options(opt);
+                                Options();
                                 break;
 
                             case 9:
@@ -197,9 +187,7 @@ namespace obligatorio1progr3
                                 {
                                     Console.WriteLine(agenre.Name);
                                 }
-                                Console.WriteLine(basicOptions);
-                                opt = int.Parse(Console.ReadLine());
-                                Options(opt);
+                                Options();
                                 break;
 
                             case 2:
@@ -209,18 +197,14 @@ namespace obligatorio1progr3
                                 {
                                     Console.WriteLine("Error. Intente nuevamente por favor.");
                                 }
-                                Console.WriteLine(basicOptions);
-                                opt = int.Parse(Console.ReadLine());
-                                Options(opt);
+                                Options();
                                 break;
 
                             case 3:
                                 Console.WriteLine("Eliminar género");
 
                                 genresController.DeleteGenre();
-                                Console.WriteLine(basicOptions);
-                                opt = int.Parse(Console.ReadLine());
-                                Options(opt);
+                                Options();
                                 break;
 
                             case 9:
@@ -257,9 +241,7 @@ namespace obligatorio1progr3
                                     Console.WriteLine(asub.Id.ToString() + ". " + asub.Name + ". Dirección: " + asub.Address + ", " + asub.City
                                         + ". Teléfono: " + asub.Number.ToString() + ". Encargado: " + asub.Manager.Name);
                                 }
-                                Console.WriteLine(basicOptions);
-                                opt = int.Parse(Console.ReadLine());
-                                Options(opt);
+                                Options();
                                 break;
 
                             case 2:
@@ -269,18 +251,14 @@ namespace obligatorio1progr3
                                 {
                                     Console.WriteLine("Error. Intente nuevamente por favor.");
                                 }
-                                Console.WriteLine(basicOptions);
-                                opt = int.Parse(Console.ReadLine());
-                                Options(opt);
+                                Options();
                                 break;
 
                             case 3:
                                 Console.WriteLine("Eliminar sucursal");
 
                                 subController.DeleteSubsidiary();
-                                Console.WriteLine(basicOptions);
-                                opt = int.Parse(Console.ReadLine());
-                                Options(opt);
+                                Options();
                                 break;
 
                             case 9:
@@ -316,9 +294,7 @@ namespace obligatorio1progr3
                                 {
                                     Console.WriteLine(amanager.Id.ToString() + ". " + amanager.Name + ". " + amanager.PhoneNumber.ToString());
                                 }
-                                Console.WriteLine(basicOptions);
-                                opt = int.Parse(Console.ReadLine());
-                                Options(opt);
+                                Options();
                                 break;
 
                             case 2:
@@ -328,9 +304,7 @@ namespace obligatorio1progr3
                                 {
                                     Console.WriteLine("Error. Intente nuevamente por favor.");
                                 }
-                                Console.WriteLine(basicOptions);
-                                opt = int.Parse(Console.ReadLine());
-                                Options(opt);
+                                Options();
                                 break;
 
                             case 3:
@@ -346,18 +320,14 @@ namespace obligatorio1progr3
                                 {
                                     Console.WriteLine("Error. Intente nuevamente por favor");
                                 }
-                                Console.WriteLine(basicOptions);
-                                opt = int.Parse(Console.ReadLine());
-                                Options(opt);
+                                Options();
                                 break;
 
                             case 4:
                                 Console.WriteLine("Eliminar encargado");
 
                                 managersController.DeleteManager();
-                                Console.WriteLine(basicOptions);
-                                opt = int.Parse(Console.ReadLine());
-                                Options(opt);
+                                Options();
                                 break;
 
                             case 9:
@@ -375,9 +345,7 @@ namespace obligatorio1progr3
                     #region rentals
                     case 6:
                         Console.WriteLine("Préstamos");
-                        Console.WriteLine(basicOptions);
-                        opt = int.Parse(Console.ReadLine());
-                        Options(opt);
+                        Options();
                         break;
                     #endregion
 

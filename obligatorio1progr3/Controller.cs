@@ -11,14 +11,16 @@ namespace obligatorio1progr3
 {
     public class Controller
     {
+
         #region clients
         private static List<Client> mListClients = new List<Client>();
 
         public List<Client> ListClients()
         {
-            Subsidiary ss = FindSubsidiary(1);
-            Client cli = new Adult(2, "Jorge", "jorge@mail", 098, ss);
-            Client clie = new Child(3, "antonio", "antoni@o", 018, ss, true);
+            Subsidiary s2 = new Subsidiary(12, "Tranqueras", "Tacuarembo", "Calle número 1", 43512323, FindManager(1));
+
+            Client cli = new Adult(2, "Jorge", "jorge@mail", 098, s2);
+            Client clie = new Child(3, "antonio", "antoni@o", 018, s2, true);
             mListClients.Add(cli);
             mListClients.Add(clie);
             return mListClients;
