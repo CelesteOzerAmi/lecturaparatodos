@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace obligatorio1progr3
             #region switch basic options
             bool switchInLoop = true;
             string initialWelcome = "Bienvenido. Seleccione una opción para comenzar: ";
-            string initialOptions = "1: Usuarios | 2: Libros | 3: Géneros | 4: Sucursales | 5: Encargados | 6: Clientes | 7: Préstamos | ";
+            string initialOptions = "1: Usuarios | 2: Libros | 3: Géneros | 4: Sucursales | 5: Encargados | 6: Préstamos | ";
             string basicOptions = "0: Inicio | 9: Salir";
             
             bool Options(int opt)
@@ -42,6 +43,7 @@ namespace obligatorio1progr3
                 Console.WriteLine(initialOptions + basicOptions);
 
                 int initialValue = int.Parse(Console.ReadLine());
+                int opt;
 
                 switch (initialValue)
                 {
@@ -51,9 +53,56 @@ namespace obligatorio1progr3
                     #region users
                     case 1:
                         Console.WriteLine("Usuarios");
-                        Console.WriteLine(basicOptions);
-                        int opt = int.Parse(Console.ReadLine());
-                        Options(opt);
+
+                        Controller clientController = new Controller();
+                        Console.WriteLine("Seleccione una opción: ");
+                        Console.WriteLine("1: Ver usuarios | 2: Alta usuario | 3: Eliminar usuario | " + basicOptions);
+                        int optionValue = int.Parse(Console.ReadLine());
+
+                        switch (optionValue)
+                        {
+                            case 0:
+                                break;
+
+                            case 1:
+                                Console.WriteLine("Usuarios añadidos");
+
+                                foreach (Client aclient in clientController.ListClients())
+                                {
+                                    Console.WriteLine($"Usuario {aclient.Id}: {aclient.Name}, {aclient.PhoneNumber}. Registrado en {aclient.Subsidiary.Name}");
+                                }
+                                Console.WriteLine(basicOptions);
+                                opt = int.Parse(Console.ReadLine());
+                                Options(opt);
+                                break;
+
+                            case 2:
+                                Console.WriteLine("Alta usuario");
+
+                                if (!clientController.CreateClient())
+                                {
+                                    Console.WriteLine("Error. Intente nuevamente por favor.");
+                                }
+                                Console.WriteLine(basicOptions);
+                                opt = int.Parse(Console.ReadLine());
+                                Options(opt);
+                                break;
+
+                            case 3:
+                                Console.WriteLine("Eliminar usuario");
+
+                                clientController.DeleteClient();
+                                break;
+
+                            case 9:
+                                Console.WriteLine("Gracias por utilizar nuestro sistema :)");
+                                switchInLoop = false;
+                                break;
+
+                            default:
+                                Console.WriteLine("Opción inválida");
+                                break;
+                        }
                         break;
                     #endregion
 
@@ -61,8 +110,8 @@ namespace obligatorio1progr3
                     case 2:
                         Console.WriteLine("Libros");
                         Console.WriteLine("Seleccione una opción: ");
-                        Console.WriteLine("1: Ver libros | 2: Alta libro | 3: Eliminar libro | " + basicOptions);
-                        int optionValue = int.Parse(Console.ReadLine());
+                        Console.WriteLine("1: Ver libros | 2: Alta libro | 3: Modificar libro | 4: Eliminar libro " + basicOptions);
+                        optionValue = int.Parse(Console.ReadLine());
 
                         Controller aController = new Controller();
 
@@ -74,11 +123,9 @@ namespace obligatorio1progr3
                             case 1:
                                 Console.WriteLine("Libros añadidos");
 
-                                List<Book> booksList = new List<Book>();
-                                booksList = aController.ListBooks();
-                                foreach (Book abook in booksList)
+                                foreach (Book abook in aController.ListBooks())
                                 {
-                                    Console.WriteLine("'" + abook.Title + "'. Autor: " + abook.Author + ". Año: " + abook.Year);
+                                    Console.WriteLine($"{abook.Id}. '{abook.Title}', {abook.Author}. {abook.Year}. Estado: {abook.State}. Sucursal: {abook.Subsidiary.Name}");
                                 }
                                 Console.WriteLine(basicOptions);
                                 opt = int.Parse(Console.ReadLine());
@@ -88,11 +135,7 @@ namespace obligatorio1progr3
                             case 2:
                                 Console.WriteLine("Alta libro");
 
-                                if (aController.CreateBook())
-                                {
-                                    Console.WriteLine("Libro añadido con éxito");
-                                }
-                                else
+                                if (!aController.CreateBook())
                                 {
                                     Console.WriteLine("Error. Intente nuevamente por favor.");
                                 }
@@ -102,37 +145,18 @@ namespace obligatorio1progr3
                                 break;
 
                             case 3:
+                                Console.WriteLine("Modificar libro");
+
+                                aController.EditBook();
+                                Console.WriteLine(basicOptions);
+                                opt = int.Parse(Console.ReadLine());
+                                Options(opt);
+                                break;
+
+                            case 4:
                                 Console.WriteLine("Eliminar libro");
 
-                                Console.WriteLine("Ingrese ID");
-                                int id = int.Parse(Console.ReadLine());
-                                Book book = aController.FindBook(id);
-                                if (book != null)
-                                {
-                                    Console.WriteLine("'" + book.Title + "'. Autor: " + book.Author + ". Año: " + book.Year);
-                                    Console.WriteLine("¿Eliminar libro?");
-                                    Console.WriteLine("1. Confirmar | 2. Cancelar");
-                                    int selectedOption = int.Parse(Console.ReadLine());
-                                    if (selectedOption == 1)
-                                    {
-                                        if (aController.DeleteBook(id))
-                                        {
-                                            Console.WriteLine("Libro eliminado con éxito.");
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("Error. Intente nuevamente por favor.");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Operación cancelada.");
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Libro no existe.");
-                                }
+                                aController.DeleteBook();
                                 Console.WriteLine(basicOptions);
                                 opt = int.Parse(Console.ReadLine());
                                 Options(opt);
@@ -181,11 +205,7 @@ namespace obligatorio1progr3
                             case 2:
                                 Console.WriteLine("Alta género");
 
-                                if (genresController.CreateGenre())
-                                {
-                                    Console.WriteLine("Género añadido con éxito");
-                                }
-                                else
+                                if (!genresController.CreateGenre())
                                 {
                                     Console.WriteLine("Error. Intente nuevamente por favor.");
                                 }
@@ -197,35 +217,7 @@ namespace obligatorio1progr3
                             case 3:
                                 Console.WriteLine("Eliminar género");
 
-                                Console.WriteLine("Ingrese ID");
-                                int id = int.Parse(Console.ReadLine());
-                                Genre genre = genresController.FindGenre(id);
-                                if (genre != null)
-                                {
-                                    Console.WriteLine(genre.Name);
-                                    Console.WriteLine("¿Eliminar género?");
-                                    Console.WriteLine("1. Confirmar | 2. Cancelar");
-                                    int selectedOption = int.Parse(Console.ReadLine());
-                                    if (selectedOption == 1)
-                                    {
-                                        if (genresController.DeleteGenre(id))
-                                        {
-                                            Console.WriteLine("Género eliminado con éxito.");
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("Error. Intente nuevamente por favor.");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Operación cancelada.");
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Género no existe.");
-                                }
+                                genresController.DeleteGenre();
                                 Console.WriteLine(basicOptions);
                                 opt = int.Parse(Console.ReadLine());
                                 Options(opt);
@@ -260,9 +252,7 @@ namespace obligatorio1progr3
                             case 1:
                                 Console.WriteLine("Sucursales registradas");
 
-                                List<Subsidiary> subsidiariesList = new List<Subsidiary>();
-                                subsidiariesList = subController.ListSubsidiaries();
-                                foreach (Subsidiary asub in subsidiariesList)
+                                foreach (Subsidiary asub in subController.ListSubsidiaries())
                                 {
                                     Console.WriteLine(asub.Id.ToString() + ". " + asub.Name + ". Dirección: " + asub.Address + ", " + asub.City
                                         + ". Teléfono: " + asub.Number.ToString() + ". Encargado: " + asub.Manager.Name);
@@ -275,11 +265,7 @@ namespace obligatorio1progr3
                             case 2:
                                 Console.WriteLine("Alta sucursal");
 
-                                if (subController.CreateSubsidiary())
-                                {
-                                    Console.WriteLine("Sucursal añadida con éxito");
-                                }
-                                else
+                                if (!subController.CreateSubsidiary())
                                 {
                                     Console.WriteLine("Error. Intente nuevamente por favor.");
                                 }
@@ -291,35 +277,7 @@ namespace obligatorio1progr3
                             case 3:
                                 Console.WriteLine("Eliminar sucursal");
 
-                                Console.WriteLine("Ingrese ID");
-                                int id = int.Parse(Console.ReadLine());
-                                Subsidiary sub = subController.FindSubsidiary(id);
-                                if (sub != null)
-                                {
-                                    Console.WriteLine("'" + sub.Name + ". Dirección: " + sub.Address + ", " + sub.City);
-                                    Console.WriteLine("¿Eliminar sucursal?");
-                                    Console.WriteLine("1. Confirmar | 2. Cancelar");
-                                    int selectedOption = int.Parse(Console.ReadLine());
-                                    if (selectedOption == 1)
-                                    {
-                                        if (subController.DeleteSubsidiary(id))
-                                        {
-                                            Console.WriteLine("Sucursal eliminada con éxito.");
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("Error. Intente nuevamente por favor.");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Operación cancelada.");
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Sucursal no existe.");
-                                }
+                                subController.DeleteSubsidiary();
                                 Console.WriteLine(basicOptions);
                                 opt = int.Parse(Console.ReadLine());
                                 Options(opt);
@@ -346,7 +304,6 @@ namespace obligatorio1progr3
                         optionValue = int.Parse(Console.ReadLine());
                         Controller managersController = new Controller();
 
-
                         switch (optionValue)
                         {
                             case 0:
@@ -355,9 +312,7 @@ namespace obligatorio1progr3
                             case 1:
                                 Console.WriteLine("Encargados añadidos");
 
-                                List<Manager> managersList = new List<Manager>();
-                                managersList = managersController.ListManagers();
-                                foreach (Manager amanager in managersList)
+                                foreach (Manager amanager in managersController.ListManagers())
                                 {
                                     Console.WriteLine(amanager.Id.ToString() + ". " + amanager.Name + ". " + amanager.PhoneNumber.ToString());
                                 }
@@ -369,11 +324,7 @@ namespace obligatorio1progr3
                             case 2:
                                 Console.WriteLine("Alta encargado");
 
-                                if (managersController.CreateManager())
-                                {
-                                    Console.WriteLine("Encargado añadido con éxito");
-                                }
-                                else
+                                if (!managersController.CreateManager())
                                 {
                                     Console.WriteLine("Error. Intente nuevamente por favor.");
                                 }
@@ -403,35 +354,7 @@ namespace obligatorio1progr3
                             case 4:
                                 Console.WriteLine("Eliminar encargado");
 
-                                Console.WriteLine("Ingrese ID");
-                                int id = int.Parse(Console.ReadLine());
-                                Manager manager = managersController.FindManager(id);
-                                if (manager != null)
-                                {
-                                    Console.WriteLine(manager.Name);
-                                    Console.WriteLine("¿Eliminar encargado?");
-                                    Console.WriteLine("1. Confirmar | 2. Cancelar");
-                                    int selectedOption = int.Parse(Console.ReadLine());
-                                    if (selectedOption == 1)
-                                    {
-                                        if (managersController.DeleteManager(id))
-                                        {
-                                            Console.WriteLine("Encargado eliminado con éxito.");
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine("Error. Intente nuevamente por favor.");
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Operación cancelada.");
-                                    }
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Encargado no existe.");
-                                }
+                                managersController.DeleteManager();
                                 Console.WriteLine(basicOptions);
                                 opt = int.Parse(Console.ReadLine());
                                 Options(opt);
@@ -449,17 +372,8 @@ namespace obligatorio1progr3
                         break;
                     #endregion
 
-                    #region clients
-                    case 6:
-                        Console.WriteLine("Clientes");
-                        Console.WriteLine(basicOptions);
-                        opt = int.Parse(Console.ReadLine());
-                        Options(opt);
-                        break;
-                    #endregion
-
                     #region rentals
-                    case 7:
+                    case 6:
                         Console.WriteLine("Préstamos");
                         Console.WriteLine(basicOptions);
                         opt = int.Parse(Console.ReadLine());
