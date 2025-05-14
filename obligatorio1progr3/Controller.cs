@@ -6,6 +6,7 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using obligatorio1progr3.Domain;
+using obligatorio1progr3.Persistence;
 
 namespace obligatorio1progr3
 {
@@ -366,9 +367,7 @@ namespace obligatorio1progr3
 
         public List<Manager> ListManagers()
         {
-            Manager manager = new Manager(1, "Juana Perez", 098282828);
-            mListManagers.Add(manager);
-            return mListManagers;
+            return PManager.listar();
         }
 
         public Manager FindManager(int id)
