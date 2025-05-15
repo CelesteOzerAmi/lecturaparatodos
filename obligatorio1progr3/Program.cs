@@ -71,8 +71,7 @@ namespace obligatorio1progr3
                                 foreach (Client aclient in clientController.ListClients())
                                 {
                                     Console.WriteLine($"Usuario {aclient.Id}: {aclient.Name}, {aclient.PhoneNumber}. Registrado en {aclient.Subsidiary.Name}");
-                                }
-                                
+                                }                                
                                 Options();
                                 break;
 
@@ -90,6 +89,7 @@ namespace obligatorio1progr3
                                 Console.WriteLine("Eliminar usuario");
 
                                 clientController.DeleteClient();
+                                Options();
                                 break;
 
                             case 9:
@@ -181,11 +181,9 @@ namespace obligatorio1progr3
                             case 1:
                                 Console.WriteLine("Géneros añadidos");
 
-                                List<Genre> genresList = new List<Genre>();
-                                genresList = genresController.ListGenres();
-                                foreach (Genre agenre in genresList)
+                                foreach (Genre g in genresController.ListGenres())
                                 {
-                                    Console.WriteLine(agenre.Name);
+                                    Console.WriteLine($"{g.Id}: {g.Name}.");
                                 }
                                 Options();
                                 break;
@@ -255,6 +253,12 @@ namespace obligatorio1progr3
                                 break;
 
                             case 3:
+                                Console.WriteLine("Modificar sucursal");
+
+                                subController.EditSubsidiary();
+                                Options();
+                                break;
+                            case 4:
                                 Console.WriteLine("Eliminar sucursal");
 
                                 subController.DeleteSubsidiary();
@@ -290,9 +294,9 @@ namespace obligatorio1progr3
                             case 1:
                                 Console.WriteLine("Encargados añadidos");
 
-                                foreach (Manager amanager in managersController.ListManagers())
+                                foreach (Manager m in managersController.ListManagers())
                                 {
-                                    Console.WriteLine(amanager.Id.ToString() + ". " + amanager.Name + ". " + amanager.PhoneNumber.ToString());
+                                    Console.WriteLine($"{m.Id}: {m.Name}, {m.PhoneNumber}");
                                 }
                                 Options();
                                 break;
@@ -300,26 +304,14 @@ namespace obligatorio1progr3
                             case 2:
                                 Console.WriteLine("Alta encargado");
 
-                                if (!managersController.CreateManager())
-                                {
-                                    Console.WriteLine("Error. Intente nuevamente por favor.");
-                                }
+                                managersController.CreateManager();
                                 Options();
                                 break;
 
                             case 3:
                                 Console.WriteLine("Modificar encargado");
 
-                                Console.WriteLine("Ingrese ID");
-                                int mid = int.Parse(Console.ReadLine());
-                                if (managersController.EditManager(mid))
-                                {
-                                    Console.WriteLine("Encargado modificado con éxito");
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Error. Intente nuevamente por favor");
-                                }
+                                managersController.EditManager();
                                 Options();
                                 break;
 
@@ -345,6 +337,32 @@ namespace obligatorio1progr3
                     #region rentals
                     case 6:
                         Console.WriteLine("Préstamos");
+                        Controller rentController = new Controller();
+                        Console.WriteLine("Seleccione una opción: ");
+                        Console.WriteLine("1: Ver préstamos | 2: Alta préstamo | 3: Modificar préstamo | 4: Eliminar préstamo | " + basicOptions);
+                        optionValue = int.Parse(Console.ReadLine());
+
+                        switch (optionValue)
+                        {
+                            case 0:
+                                break;
+                            case 1:
+                                Console.WriteLine("Ver préstamos");
+                                Options();
+                                break;
+                            case 2:
+                                Console.WriteLine("Alta préstamo");
+                                Options();
+                                break;
+                            case 3:
+                                Console.WriteLine("Modificar préstamo");
+                                Options();
+                                break;
+                            case 4:
+                                Console.WriteLine("Eliminar préstamo");
+                                Options();
+                                break;
+                        }
                         Options();
                         break;
                     #endregion

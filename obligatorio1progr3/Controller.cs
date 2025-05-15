@@ -59,7 +59,7 @@ namespace obligatorio1progr3
             int phoneNumber = int.Parse(Console.ReadLine());
 
             Console.WriteLine("Sucursal: ");
-            foreach(Subsidiary sub in mListSubsidiaries)
+            foreach (Subsidiary sub in mListSubsidiaries)
             {
                 Console.WriteLine($"Id: {sub.Id}, Nombre: {sub.Name}, Dir: {sub.Address}.");
             }
@@ -77,7 +77,7 @@ namespace obligatorio1progr3
             {
                 Console.WriteLine("¿Registra promoción por jubilado?");
                 Console.WriteLine("1: Sí | 2: No");
-                if(int.Parse(Console.ReadLine()) == 1)
+                if (int.Parse(Console.ReadLine()) == 1)
                 {
                     UploadClient(new Senior(id, name, mail, phoneNumber, s, true));
                     Console.WriteLine("Registro exitoso.");
@@ -85,10 +85,10 @@ namespace obligatorio1progr3
                 }
                 else
                 {
-                    if(UploadClient(new Adult(id, name, mail, phoneNumber, s)))
+                    if (UploadClient(new Adult(id, name, mail, phoneNumber, s)))
                     {
                         Console.WriteLine("Registro exitoso.");
-                        return true; 
+                        return true;
                     }
                     else
                     {
@@ -129,9 +129,9 @@ namespace obligatorio1progr3
                 }
                 Console.WriteLine("Operación cancelada.");
                 return false;
-            }           
+            }
             Console.WriteLine("Usuario no existe");
-            return false; 
+            return false;
         }
         #endregion
 
@@ -174,7 +174,7 @@ namespace obligatorio1progr3
             string author = Console.ReadLine();
 
             Console.WriteLine("Género:");
-            foreach(Genre gen in mListGenres)
+            foreach (Genre gen in mListGenres)
             {
                 Console.WriteLine(gen.Id.ToString() + ". " + gen.Name);
             }
@@ -193,7 +193,7 @@ namespace obligatorio1progr3
             Console.WriteLine("Estado:");
             Console.WriteLine("1: Disponible | 2: No disponible.");
             string state;
-            if(int.Parse(Console.ReadLine()) == 1)
+            if (int.Parse(Console.ReadLine()) == 1)
             {
                 state = "Disponible";
             }
@@ -239,7 +239,7 @@ namespace obligatorio1progr3
         public bool EditBook()
         {
             Console.WriteLine("Ingrese id");
-            int id = int.Parse(Console.ReadLine()); 
+            int id = int.Parse(Console.ReadLine());
 
             foreach (Book book in mListBooks)
             {
@@ -290,22 +290,21 @@ namespace obligatorio1progr3
             return false;
         }
 
-        
+
         #endregion
 
         #region genres
-        private static List<Genre> mListGenres = new List<Genre>();
+        private static List<Genre> mListGenres = PGenre.ListGenres();
 
         public List<Genre> ListGenres()
         {
-            Genre genre = new Genre(1, "Ficción");
-            mListGenres.Add(genre);
+            mListGenres = PGenre.ListGenres();
             return mListGenres;
         }
 
         public Genre FindGenre(int id)
         {
-            foreach (Genre genre in mListGenres)
+            foreach (Genre genre in ListGenres())
             {
                 if (genre.Id == id)
                     return genre;
@@ -326,7 +325,7 @@ namespace obligatorio1progr3
             Console.WriteLine("Nombre: ");
             string name = Console.ReadLine();
 
-            mListGenres.Add(new Genre(id, name));
+            PGenre.Upload(new Genre(id, name));
             Console.WriteLine("Género añadido con éxito");
             return true;
         }
@@ -343,36 +342,34 @@ namespace obligatorio1progr3
                 Console.WriteLine("1. Confirmar | 2. Cancelar");
                 if (int.Parse(Console.ReadLine()) == 1)
                 {
-                    foreach (Genre gn in mListGenres)
+                    
+                    if (PGenre.Delete(g.Id))
                     {
-                        if (gn.Id == g.Id)
-                        {
-                            mListGenres.Remove(gn);
-                            Console.WriteLine("Género eliminado");
-                            return true;
-                        }
-                    }
+                        Console.WriteLine("Género eliminado con éxito.");
+                        return true;
+                    }                    
                 }
-                Console.WriteLine("Operación cancelada");
+                Console.WriteLine("Operación cancelada.");
                 return false;
             }
-            Console.WriteLine("Género no existe");
+            Console.WriteLine("Género no existe.");
             return false;
         }
 
         #endregion
 
         #region managers
-        private static List<Manager> mListManagers = new List<Manager>();
-
+        private static List<Manager> mListManagers = PManager.listar();
+        
         public List<Manager> ListManagers()
         {
-            return PManager.listar();
+            mListManagers = PManager.listar();
+            return mListManagers;
         }
 
         public Manager FindManager(int id)
         {
-            foreach (Manager manager in mListManagers)
+            foreach (Manager manager in PManager.listar())
             {
                 if (manager.Id == id)
                     return manager;
@@ -396,9 +393,14 @@ namespace obligatorio1progr3
             Console.WriteLine("Teléfono: ");
             int phoneNumber = int.Parse(Console.ReadLine());
 
-            mListManagers.Add(new Manager(id, name, phoneNumber));
-            Console.WriteLine("Encargado añadido con éxito");
-            return true;
+            if(PManager.alta(new Manager(id, name, phoneNumber)))
+            {
+                Console.WriteLine("Encargado añadido con éxito");
+                return true;
+            }
+
+            Console.WriteLine("Error al registrar encargado");
+            return false;
         }
 
         public bool DeleteManager()
@@ -413,14 +415,10 @@ namespace obligatorio1progr3
                 Console.WriteLine("1. Confirmar | 2. Cancelar");
                 if (int.Parse(Console.ReadLine()) == 1)
                 {
-                    foreach (Manager ma in mListManagers)
+                    if (PManager.baja(m.Id))
                     {
-                        if (ma.Id == m.Id)
-                        {
-                            mListManagers.Remove(ma);
-                            Console.WriteLine("Encargado eliminado");
-                            return true;
-                        }
+                        Console.WriteLine("Encargado eliminado");
+                        return true;
                     }
                 }
                 Console.WriteLine("Operación cancelada");
@@ -430,9 +428,12 @@ namespace obligatorio1progr3
             return false;
         }
 
-        public bool EditManager(int id)
+        public bool EditManager()
         {
-            foreach(Manager manager in mListManagers)
+
+            Console.WriteLine("Ingrese ID");
+            int id = int.Parse(Console.ReadLine());
+            foreach (Manager manager in mListManagers)
             {
                 if (manager.Id == id)
                 {
@@ -440,7 +441,12 @@ namespace obligatorio1progr3
                     manager.Name = Console.ReadLine();
                     Console.WriteLine("Ingrese teléfono");
                     manager.PhoneNumber = int.Parse(Console.ReadLine());
-                    return true;
+                    if (PManager.modificar(manager))
+                    {
+                        Console.WriteLine("Encargado modificado con éxito");
+                        return true;
+                    }    
+                    return false;
                 }
             }
             return false;
@@ -449,21 +455,20 @@ namespace obligatorio1progr3
         #endregion
 
         #region subsidiaries
-        private static List<Subsidiary> mListSubsidiaries = new List<Subsidiary>();
+        private static List<Subsidiary> mListSubsidiaries = PSubsidiary.ListSubsidiaries();
 
         public List<Subsidiary> ListSubsidiaries()
         {
-            Subsidiary sub = new Subsidiary(1, "Las Piedras", "Canelones", "Calle bis 123 bis", 24123232, new Manager(122, "Roberto Lamas", 091919010));
-            mListSubsidiaries.Add(sub);
+            mListSubsidiaries = PSubsidiary.ListSubsidiaries();
             return mListSubsidiaries;
         }
 
         public Subsidiary FindSubsidiary(int id)
         {
-            foreach (Subsidiary subsidiary in mListSubsidiaries)
+            foreach (Subsidiary s in PSubsidiary.ListSubsidiaries())
             {
-                if (subsidiary.Id == id)
-                    return subsidiary;
+                if (s.Id == id)
+                    return s;
             }
             return null;
         }
@@ -496,9 +501,13 @@ namespace obligatorio1progr3
                 Console.WriteLine(man.Id.ToString() + ". " + man.Name);
             }
             Manager manager = FindManager(int.Parse(Console.ReadLine()));
-            mListSubsidiaries.Add(new Subsidiary(id, name, city, address, number, manager));
-            Console.WriteLine("Sucursal añadida con éxito.");
-            return true;
+            if(PSubsidiary.Upload(new Subsidiary(id, name, city, address, number, manager)))
+            {
+                Console.WriteLine("Sucursal añadida con éxito.");
+                return true;
+            }
+            Console.WriteLine("Error al registrar sucursal");
+            return false;
         }
 
         public bool DeleteSubsidiary()
@@ -513,14 +522,10 @@ namespace obligatorio1progr3
                 Console.WriteLine("1. Confirmar | 2. Cancelar");
                 if (int.Parse(Console.ReadLine()) == 1)
                 {
-                    foreach (Subsidiary s in mListSubsidiaries)
+                    if (PSubsidiary.Delete(su.Id))
                     {
-                        if (s.Id == su.Id)
-                        {
-                            mListSubsidiaries.Remove(s);
-                            Console.WriteLine("Sucursal eliminada");
-                            return true;
-                        }
+                        Console.WriteLine("Sucursal eliminada");
+                        return true;
                     }
                 }
                 Console.WriteLine("Operación cancelada");
@@ -530,32 +535,39 @@ namespace obligatorio1progr3
             return false;
         }
 
-        public bool EditSubsidiary(int id)
+        public bool EditSubsidiary()
         {
-            foreach (Subsidiary subsidiary in mListSubsidiaries)
+            Console.WriteLine("Ingrese id");
+            int id = int.Parse(Console.ReadLine());
+            foreach (Subsidiary s in ListSubsidiaries())
             {
-                if (subsidiary.Id == id)
+                if (s.Id == id)
                 {
                     Console.WriteLine("Nombre: ");
-                    subsidiary.Name = Console.ReadLine();
+                    s.Name = Console.ReadLine();
 
                     Console.WriteLine("Ciudad: ");
-                    subsidiary.City = Console.ReadLine();
+                    s.City = Console.ReadLine();
 
                     Console.WriteLine("Dirección: ");
-                    subsidiary.Address = Console.ReadLine();
+                    s.Address = Console.ReadLine();
 
                     Console.WriteLine("Teléfono: ");
-                    subsidiary.Number = int.Parse(Console.ReadLine());
+                    s.Number = int.Parse(Console.ReadLine());
 
                     Console.WriteLine("Encargado: ");
                     foreach (Manager man in mListManagers)
                     {
                         Console.WriteLine(man.Id.ToString() + ". " + man.Name);
                     }
-                    subsidiary.Manager = FindManager(int.Parse(Console.ReadLine()));
+                    s.Manager = FindManager(int.Parse(Console.ReadLine()));
+                    if (PSubsidiary.Update(s))
+                    {
+                        Console.WriteLine("Sucusal modificada con éxito");
+                    }
                 }
             }
+            Console.WriteLine("Sucursal no existe");
             return false;
         }
         #endregion

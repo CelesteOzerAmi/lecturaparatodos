@@ -9,11 +9,11 @@ namespace obligatorio1progr3.Persistence
 {
     public static class PManager
     {
-        public static string alta(Manager m)
+        public static bool alta(Manager m)
         {
             try
             {
-                string sql = "INSERT INTO managers(id, name, phoneNumber) VALUES (@id, @name, @phoneNumber);";
+                string sql = "INSERT INTO Manager(id, name, phoneNumber) VALUES (@id, @name, @phoneNumber);";
 
                 SqlParameter[] parametros =
                 {
@@ -23,42 +23,45 @@ namespace obligatorio1progr3.Persistence
                 };
 
                 if (Conexion.Consulta(sql, parametros))
-                    return "Manager successfully added";
+                    return true;
 
-                return "Error removing manager";
+                return false;
             }
             catch (Exception e)
             {
-                return $"Error removing manager {e.Message}";
+                Console.WriteLine("Error", e.ToString());
+                return false;
             }
-
         }
-        public static string baja(int pCi)
+
+        public static bool baja(int pId)
         {
             try
             {
-                string sql = "DELETE FROM managers WHERE id=@id";
+                string sql = "DELETE FROM Manager WHERE id=@id";
 
                 SqlParameter[] parametros =
                 {
-                new SqlParameter("@id", SqlDbType.Int) {Value = pCi}
+                new SqlParameter("@id", SqlDbType.Int) {Value = pId}
                 };
 
                 if (Conexion.Consulta(sql, parametros))
-                    return "Manager removed successfully";
+                    return true;
 
-                return "Error removing manager";
+                return false;
             }
             catch (Exception e)
             {
-                return $"Error removing manager {e.Message}";
+                Console.WriteLine("Error", e);
+                return false;
             }
         }
-        public static string modificar(Manager m)
+
+        public static bool modificar(Manager m)
         {
             try
             {
-                string sql = "UPDATE managers SET name=@name, phoneNumber=@phoneNumber WHERE id=@id;";
+                string sql = "UPDATE Manager SET name=@name, phoneNumber=@phoneNumber WHERE id=@id;";
 
                 SqlParameter[] parametros =
                 {
@@ -68,26 +71,26 @@ namespace obligatorio1progr3.Persistence
                 };
 
                 if (Conexion.Consulta(sql, parametros))
-                    return "Manager removed successfully";
+                    return true;
 
-                return "Error removing manager";
-
+                return false;
             }
             catch (Exception e)
             {
-                return $"Error removing manager {e.Message}";
+                Console.WriteLine("Error", e);
+                return false;
             }
-
         }
-        public static Manager conseguir(int pCi)
+
+        public static Manager conseguir(int pId)
         {
             try
             {
-                string sql = "SELECT * FROM managers WHERE id=@id";
+                string sql = "SELECT * FROM Manager WHERE id=@id";
 
                 SqlParameter[] parametros =
                 {
-                new SqlParameter("@id", SqlDbType.Int) {Value = pCi}
+                new SqlParameter("@id", SqlDbType.Int) {Value = pId}
                 };
 
                 DataSet ds = Conexion.Seleccion(sql, parametros);
@@ -101,6 +104,7 @@ namespace obligatorio1progr3.Persistence
                 return null;
             }
         }
+
         public static List<Manager> listar()
         {
             List<Manager> managers = new List<Manager>();

@@ -10,7 +10,7 @@ namespace obligatorio1progr3.Persistence
         {
             get
             {
-                return @"Data Source=DESKTOP-R3T1GP1\SQLEXPRESS;Initial Catalog=lecturaParaTodos;Integrated Security=True;";
+                return @"Data Source=DESKTOP-D9ANF67\SQLEXPRESS;Initial Catalog=lecturaParaTodos;Integrated Security=True;";
                 //return @"Data Source=localhost,1433;Initial Catalog=prueba;";
             }
         }
