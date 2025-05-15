@@ -14,7 +14,7 @@ namespace obligatorio1progr3.Domain
         public bool Discount { get { return discount; } set { discount = value; } }
 
         public Senior(int pId, string pName, string pMail, int pPhoneNumber, Subsidiary pSubsidiary, bool pDiscount)
-            : base(pId, pName, pMail, pPhoneNumber, pSubsidiary)
+            : base(pId, pName, pMail, pPhoneNumber, pSubsidiary, "Senior")
         {
             this.discount = pDiscount;
         }

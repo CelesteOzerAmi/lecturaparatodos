@@ -10,7 +10,7 @@ namespace obligatorio1progr3.Domain
     {
 
         public Adult(int pId, string pName, string pMail, int pPhoneNumber, Subsidiary pSubsidiary) 
-            : base(pId, pName, pMail, pPhoneNumber, pSubsidiary)
+            : base(pId, pName, pMail, pPhoneNumber, pSubsidiary, "Adult")
         {
         }
 

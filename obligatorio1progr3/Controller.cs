@@ -18,25 +18,48 @@ namespace obligatorio1progr3
 
         public List<Client> ListClients()
         {
-            Subsidiary s2 = new Subsidiary(12, "Tranqueras", "Tacuarembo", "Calle número 1", 43512323, FindManager(1));
-
-            Client cli = new Adult(2, "Jorge", "jorge@mail", 098, s2);
-            Client clie = new Child(3, "antonio", "antoni@o", 018, s2, true);
-            mListClients.Add(cli);
-            mListClients.Add(clie);
-            return mListClients;
+            List<Client> clients = new List<Client>();
+            foreach (Senior s in PSenior.Listar()) {
+                clients.Add(new Client(s.Id, s.Name, s.Mail, s.PhoneNumber, s.Subsidiary, "Senior"));
+            }
+            foreach (Child c in PChild.listar())
+            {
+                clients.Add(new Client(c.Id, c.Name, c.Mail, c.PhoneNumber, c.Subsidiary, "Child"));
+            }
+            foreach (Adult a in PAdult.listar())
+            {
+                clients.Add(new Client(a.Id, a.Name, a.Mail, a.PhoneNumber, a.Subsidiary, "Adult"));
+            }
+            return clients;
         }
 
         public Client FindClient(int id)
         {
-            foreach (Client client in mListClients)
+            Client client = null;
+            if (PSenior.Conseguir(id) != null)
             {
-                if (client.Id == id)
-                {
-                    return client;
-                }
+                Senior s = PSenior.Conseguir(id);
+                client = new Client(s.Id, s.Name, s.Mail, s.PhoneNumber, s.Subsidiary, "Senior");
             }
-            return null;
+            
+            if (PChild.conseguir(id) != null)
+            {
+                Child c = PChild.conseguir(id);
+                client = new Client(c.Id, c.Name, c.Mail, c.PhoneNumber, c.Subsidiary, "Child");
+            }
+            
+            if (PAdult.conseguir(id) != null)
+            {
+                Adult a = PAdult.conseguir(id);
+                client = new Client(a.Id, a.Name, a.Mail, a.PhoneNumber, a.Subsidiary, "Adult");
+            }
+            
+            return client;
+        }
+
+        public Adult FindAdult(int id)
+        {
+            return PAdult.conseguir(id);
         }
 
         public bool CreateClient()
@@ -59,7 +82,7 @@ namespace obligatorio1progr3
             int phoneNumber = int.Parse(Console.ReadLine());
 
             Console.WriteLine("Sucursal: ");
-            foreach (Subsidiary sub in mListSubsidiaries)
+            foreach (Subsidiary sub in PSubsidiary.ListSubsidiaries())
             {
                 Console.WriteLine($"Id: {sub.Id}, Nombre: {sub.Name}, Dir: {sub.Address}.");
             }
@@ -67,9 +90,9 @@ namespace obligatorio1progr3
 
             Console.WriteLine("¿Requiere autorización de adulto?");
             Console.WriteLine("1: Sí | 2: No");
-            if (int.Parse(Console.ReadLine()) == 1)
+            if (Console.ReadLine() == "1")
             {
-                UploadClient(new Child(id, name, mail, phoneNumber, s, false));
+                PChild.alta(new Child(id, name, mail, phoneNumber, s, true));
                 Console.WriteLine("Registro exitoso.");
                 return true;
             }
@@ -77,24 +100,16 @@ namespace obligatorio1progr3
             {
                 Console.WriteLine("¿Registra promoción por jubilado?");
                 Console.WriteLine("1: Sí | 2: No");
-                if (int.Parse(Console.ReadLine()) == 1)
+                if (Console.ReadLine() == "1")
                 {
-                    UploadClient(new Senior(id, name, mail, phoneNumber, s, true));
+                    PSenior.Alta(new Senior(id, name, mail, phoneNumber, s, true));
                     Console.WriteLine("Registro exitoso.");
                     return true;
                 }
                 else
                 {
-                    if (UploadClient(new Adult(id, name, mail, phoneNumber, s)))
-                    {
-                        Console.WriteLine("Registro exitoso.");
-                        return true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("error al registrar, intente nuevamente.");
-                        return false;
-                    }
+                    PAdult.alta(new Adult(id, name, mail, phoneNumber, s));
+                    return true;
                 }
             }
         }
@@ -115,17 +130,9 @@ namespace obligatorio1progr3
                 Console.WriteLine($"Id: {cli.Id}, {cli.Name}, {cli.PhoneNumber}");
                 Console.WriteLine("¿Eliminar usuario?");
                 Console.WriteLine("1. Confirmar | 2. Cancelar");
-                if (int.Parse(Console.ReadLine()) == 1)
+                if (Console.ReadLine() == "1")
                 {
-                    foreach (Client c in mListClients)
-                    {
-                        if (c.Id == cli.Id)
-                        {
-                            mListClients.Remove(c);
-                            Console.WriteLine("Usuario eliminado con exito.");
-                            return true;
-                        }
-                    }
+                    DetermineClientDeletion(cli.Id);
                 }
                 Console.WriteLine("Operación cancelada.");
                 return false;
@@ -399,15 +406,8 @@ namespace obligatorio1progr3
 
             if (m != null)
             {
-                Console.WriteLine($"Id: {m.Id}, {m.Name}.");
-                Console.WriteLine("¿Eliminar encargado?");
-                Console.WriteLine("1. Confirmar | 2. Cancelar");
-                if (int.Parse(Console.ReadLine()) == 1)
-                {
-                    PManager.baja(m.Id);
-                }
-                Console.WriteLine("Operación cancelada");
-                return false;
+                PManager.baja(m.Id);
+                return true;
             }
             Console.WriteLine("Encargado no existe");
             return false;
@@ -545,6 +545,26 @@ namespace obligatorio1progr3
             }
             Console.WriteLine("Sucursal no existe");
             return false;
+        }
+        #endregion
+
+        #region utilities
+        public void DetermineClientDeletion(int id)
+        {
+            if (PSenior.Conseguir(id) != null)
+            {
+                PSenior.Baja(id);
+            }
+
+            if (PChild.conseguir(id) != null)
+            {
+                PChild.baja(id);
+            }
+
+            if (PAdult.conseguir(id) != null)
+            {
+                PAdult.baja(id);
+            }
         }
         #endregion
     }

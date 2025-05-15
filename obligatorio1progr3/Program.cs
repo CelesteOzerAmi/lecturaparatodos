@@ -70,7 +70,7 @@ namespace obligatorio1progr3
 
                                 foreach (Client aclient in clientController.ListClients())
                                 {
-                                    Console.WriteLine($"Usuario {aclient.Id}: {aclient.Name}, {aclient.PhoneNumber}. Registrado en {aclient.Subsidiary.Name}");
+                                    Console.WriteLine($"Usuario {aclient.Id}: {aclient.Name}, {aclient.PhoneNumber}. Registrado en {aclient.Subsidiary.Name}. Tipo de usuario {aclient.Type}");
                                 }                                
                                 Options();
                                 break;
@@ -310,8 +310,8 @@ namespace obligatorio1progr3
 
                             case 3:
                                 Console.WriteLine("Modificar encargado");
-
-                                managersController.EditManager();
+                                Console.WriteLine("Ingrese ID");
+                                managersController.EditManager(int.Parse(Console.ReadLine()));
                                 Options();
                                 break;
 

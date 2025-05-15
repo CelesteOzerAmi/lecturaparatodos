@@ -9,14 +9,14 @@ namespace obligatorio1progr3.Domain
     public class Child : Client
     {
 
-        private bool authorization;
+        private bool authorized;
 
-        public bool Authorization { get { return authorization; } set { authorization = value; } }  
+        public bool Authorized { get { return authorized; } set { authorized = value; } }  
 
-        public Child(int pId, string pName, string pMail, int pPhoneNumber, Subsidiary pSubsidiary, bool pAuthorization)
-            : base(pId, pName, pMail, pPhoneNumber, pSubsidiary)
+        public Child(int pId, string pName, string pMail, int pPhoneNumber, Subsidiary pSubsidiary, bool pAuthorized)
+            : base(pId, pName, pMail, pPhoneNumber, pSubsidiary, "Child")
         {
-            this.authorization = pAuthorization;
+            this.authorized = pAuthorized;
         }
 
        
