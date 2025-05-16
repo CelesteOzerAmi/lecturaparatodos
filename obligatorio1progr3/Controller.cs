@@ -114,12 +114,6 @@ namespace obligatorio1progr3
             }
         }
 
-        public bool UploadClient(Client c)
-        {
-            mListClients.Add(c);
-            return true;
-        }
-
         public bool DeleteClient()
         {
             Console.WriteLine("Ingrese ID");
@@ -143,24 +137,10 @@ namespace obligatorio1progr3
         #endregion
 
         #region books
-        private static List<Book> mListBooks = new List<Book>();
 
         public List<Book> ListBooks()
         {
-            Subsidiary s1 = new Subsidiary(12, "Tranqueras", "Tacuarembo", "Calle número 1", 43512323, FindManager(1));
-            Book lib = new Book(1, "La cañada seca", "Horacio Quiroga", new Genre(1, "Terror"), 1999, s1, "Disponible");
-            mListBooks.Add(lib);
-            return mListBooks;
-        }
-
-        public Book FindBook(int id)
-        {
-            foreach (Book book in mListBooks)
-            {
-                if (book.Id == id)
-                    return book;
-            }
-            return null;
+            return PBook.ListBooks();
         }
 
         public bool CreateBook()
@@ -168,7 +148,7 @@ namespace obligatorio1progr3
             Console.WriteLine("Id:");
             int id = int.Parse(Console.ReadLine());
 
-            if (FindBook(id) != null)
+            if (PBook.GetBook(id) != null)
             {
                 Console.WriteLine("Libro ya existe");
                 return false;
@@ -181,9 +161,9 @@ namespace obligatorio1progr3
             string author = Console.ReadLine();
 
             Console.WriteLine("Género:");
-            foreach (Genre gen in mListGenres)
+            foreach (Genre gen in PGenre.ListGenres())
             {
-                Console.WriteLine(gen.Id.ToString() + ". " + gen.Name);
+                Console.WriteLine($"{gen.Id}, {gen.Name}.");
             }
             Genre genre = FindGenre(int.Parse(Console.ReadLine()));
 
@@ -191,33 +171,35 @@ namespace obligatorio1progr3
             int year = int.Parse(Console.ReadLine());
 
             Console.WriteLine("Sucursal:");
-            foreach (Subsidiary s in mListSubsidiaries)
+            foreach (Subsidiary s in PSubsidiary.ListSubsidiaries())
             {
-                Console.WriteLine(s.Id.ToString() + ". " + s.Name);
+                Console.WriteLine($"{s.Id}, {s.Name}.");
             }
             Subsidiary subsidiary = FindSubsidiary(int.Parse(Console.ReadLine()));
 
             Console.WriteLine("Estado:");
             Console.WriteLine("1: Disponible | 2: No disponible.");
-            string state;
+            bool available = false;
             if (int.Parse(Console.ReadLine()) == 1)
             {
-                state = "Disponible";
+                available = true;
             }
-            else
+           
+            if(PBook.Upload(new Book(id, title, author, genre, year, subsidiary, available)))
             {
-                state = "No disponible";
+                Console.WriteLine("Libro añadido con éxito");
+                return true;
             }
 
-            mListBooks.Add(new Book(id, title, author, genre, year, subsidiary, state));
-            Console.WriteLine("Libro añadido con éxito");
-            return true;
+            Console.WriteLine("Error al registrar libro");
+            return false;
+            
         }
 
         public bool DeleteBook()
         {
             Console.WriteLine("Ingrese ID");
-            Book boo = FindBook(int.Parse(Console.ReadLine()));
+            Book boo = PBook.GetBook(int.Parse(Console.ReadLine()));
 
             if (boo != null)
             {
@@ -226,15 +208,13 @@ namespace obligatorio1progr3
                 Console.WriteLine("1. Confirmar | 2. Cancelar");
                 if (int.Parse(Console.ReadLine()) == 1)
                 {
-                    foreach (Book b in mListBooks)
+                    if (PBook.Delete(boo.Id))
                     {
-                        if (b.Id == boo.Id)
-                        {
-                            mListBooks.Remove(b);
-                            Console.WriteLine("Libro eliminado");
-                            return true;
-                        }
+                        Console.WriteLine("Libro eliminado");
+                        return true;
                     }
+                    Console.WriteLine("Error al eliminar");
+                    return false;
                 }
                 Console.WriteLine("Operación cancelada");
                 return false;
@@ -247,66 +227,63 @@ namespace obligatorio1progr3
         {
             Console.WriteLine("Ingrese id");
             int id = int.Parse(Console.ReadLine());
-
-            foreach (Book book in mListBooks)
+            Book book = PBook.GetBook(id);
+            if (book != null)
             {
-                if (book.Id == id)
+                Console.WriteLine("Título");
+                book.Title = Console.ReadLine();
+
+                Console.WriteLine("Autor:");
+                book.Author = Console.ReadLine();
+
+                Console.WriteLine("Género:");
+                foreach (Genre g in PGenre.ListGenres())
                 {
-                    Console.WriteLine("Título");
-                    book.Title = Console.ReadLine();
+                    Console.WriteLine($"{g.Id}, {g.Name}.");
+                }
+                book.Genre = FindGenre(int.Parse(Console.ReadLine()));
 
-                    Console.WriteLine("Autor:");
-                    book.Author = Console.ReadLine();
+                Console.WriteLine("Año");
+                book.Year = int.Parse(Console.ReadLine());
 
-                    Console.WriteLine("Género:");
-                    foreach (Genre gen in mListGenres)
-                    {
-                        Console.WriteLine(gen.Id.ToString() + ". " + gen.Name);
-                    }
-                    book.Genre = FindGenre(int.Parse(Console.ReadLine()));
+                foreach (Subsidiary s in PSubsidiary.ListSubsidiaries())
+                {
+                    Console.WriteLine($"{s.Id}, {s.Name}.");
+                }
+                book.Subsidiary = FindSubsidiary(int.Parse(Console.ReadLine()));
 
-                    Console.WriteLine("Año");
-                    book.Year = int.Parse(Console.ReadLine());
-
-                    foreach (Subsidiary s in mListSubsidiaries)
-                    {
-                        Console.WriteLine(s.Id.ToString() + ". " + s.Name);
-                    }
-                    book.Subsidiary = FindSubsidiary(int.Parse(Console.ReadLine()));
-
-                    Console.WriteLine("Estado:");
-                    Console.WriteLine("1: Disponible | 2: No disponible.");
-                    if (int.Parse(Console.ReadLine()) == 1)
-                    {
-                        book.State = "Disponible";
-                    }
-                    else
-                    {
-                        book.State = "No disponible";
-                    }
-                    Console.WriteLine("Libro modificado con exito.");
-                    return true;
+                Console.WriteLine("Estado:");
+                Console.WriteLine("1: Disponible | 2: No disponible.");
+                if (int.Parse(Console.ReadLine()) == 1)
+                {
+                    book.Available = true;
                 }
                 else
                 {
-                    Console.WriteLine("Libro no encontrado");
-                    return false;
+                    book.Available = false;
                 }
+                if (PBook.Update(book))
+                {
+                    Console.WriteLine("Libro modificado con exito.");
+                    return true;
+                }
+                Console.WriteLine("Error al modificar libro");
+                return false;
             }
-            Console.WriteLine("Error. Intente nuevamente.");
-            return false;
+            else
+            {
+                Console.WriteLine("Libro no encontrado");
+                return false;
+            }
         }
 
 
         #endregion
 
         #region genres
-        private static List<Genre> mListGenres = PGenre.ListGenres();
-
         public List<Genre> ListGenres()
         {
-            mListGenres = PGenre.ListGenres();
-            return mListGenres;
+            return PGenre.ListGenres();
         }
 
         public Genre FindGenre(int id)
@@ -349,7 +326,6 @@ namespace obligatorio1progr3
                 Console.WriteLine("1. Confirmar | 2. Cancelar");
                 if (int.Parse(Console.ReadLine()) == 1)
                 {
-
                     if (PGenre.Delete(g.Id))
                     {
                         Console.WriteLine("Género eliminado con éxito.");
@@ -431,12 +407,10 @@ namespace obligatorio1progr3
         #endregion
 
         #region subsidiaries
-        private static List<Subsidiary> mListSubsidiaries = PSubsidiary.ListSubsidiaries();
 
         public List<Subsidiary> ListSubsidiaries()
         {
-            mListSubsidiaries = PSubsidiary.ListSubsidiaries();
-            return mListSubsidiaries;
+            return PSubsidiary.ListSubsidiaries();
         }
 
         public Subsidiary FindSubsidiary(int id)

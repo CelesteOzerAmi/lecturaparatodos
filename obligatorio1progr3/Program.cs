@@ -19,8 +19,7 @@ namespace obligatorio1progr3
             string initialOptions = "1: Usuarios | 2: Libros | 3: Géneros | 4: Sucursales | 5: Encargados | 6: Préstamos | ";
             string basicOptions = "0: Inicio | 9: Salir";
             
-            bool Options()
-                
+            bool Options()                
             {
                 Console.WriteLine(basicOptions);
                 int opt = int.Parse(Console.ReadLine());
@@ -123,7 +122,12 @@ namespace obligatorio1progr3
 
                                 foreach (Book abook in aController.ListBooks())
                                 {
-                                    Console.WriteLine($"{abook.Id}. '{abook.Title}', {abook.Author}. {abook.Year}. Estado: {abook.State}. Sucursal: {abook.Subsidiary.Name}");
+                                    string state = "Disponible";
+                                    if(abook.Available == false)
+                                    {
+                                        state = "No disponible";
+                                    }
+                                    Console.WriteLine($"{abook.Id}. '{abook.Title}', {abook.Author}. {abook.Year}. Estado: {state}. Sucursal: {abook.Subsidiary.Name}");
                                 }
                                 Options();
                                 break;

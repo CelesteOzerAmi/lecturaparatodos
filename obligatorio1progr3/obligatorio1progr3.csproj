@@ -54,8 +54,12 @@
     <Compile Include="Domain\Senior.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="Persistence\Conexion.cs" />
+    <Compile Include="Persistence\PAdult.cs" />
+    <Compile Include="Persistence\PBook.cs" />
+    <Compile Include="Persistence\PChild.cs" />
     <Compile Include="Persistence\PGenre.cs" />
     <Compile Include="Persistence\PManager.cs" />
+    <Compile Include="Persistence\PSenior.cs" />
     <Compile Include="Persistence\PSubsidiary.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

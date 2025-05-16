@@ -14,7 +14,7 @@ namespace obligatorio1progr3.Domain
         private Genre _genre;
         private int _year;
         private Subsidiary _subsidiary;
-        private string _state;
+        private bool _available;
 
         public int Id
         {
@@ -52,14 +52,14 @@ namespace obligatorio1progr3.Domain
             set { _subsidiary = value; }
         }
 
-        public string State
+        public bool Available
         {
-            get { return _state; }
-            set { _state = value; }
+            get { return _available; }
+            set { _available = value; }
         }
 
 
-        public Book(int pId, string pTitle, string pAuthor, Genre pGenre, int pYear, Subsidiary pSubsidiary, string pState)
+        public Book(int pId, string pTitle, string pAuthor, Genre pGenre, int pYear, Subsidiary pSubsidiary, bool pAvailable)
         {
             _id = pId;
             _title = pTitle;
@@ -67,7 +67,7 @@ namespace obligatorio1progr3.Domain
             _genre = pGenre;
             _year = pYear;
             _subsidiary = pSubsidiary;
-            _state = pState;
+            _available = pAvailable;
         }
     }
 }
