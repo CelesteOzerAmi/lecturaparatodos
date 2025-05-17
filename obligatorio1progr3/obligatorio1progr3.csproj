@@ -59,6 +59,7 @@
     <Compile Include="Persistence\PChild.cs" />
     <Compile Include="Persistence\PGenre.cs" />
     <Compile Include="Persistence\PManager.cs" />
+    <Compile Include="Persistence\PRental.cs" />
     <Compile Include="Persistence\PSenior.cs" />
     <Compile Include="Persistence\PSubsidiary.cs" />
     <Compile Include="Program.cs" />

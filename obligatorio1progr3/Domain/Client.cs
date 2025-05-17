@@ -21,8 +21,8 @@ namespace obligatorio1progr3.Domain
         public string Mail { get => mail; set => mail = value; }
         public int PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
         public Subsidiary Subsidiary { get => subsidiary; set => subsidiary = value; }
-
         public string Type { get => type; set => type = value; }
+
         public Client(int pId, string pName, string pMail, int pPhoneNumber, Subsidiary pSubsidiary, string type)
         {
             this.id = pId;

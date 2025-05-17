@@ -350,24 +350,43 @@ namespace obligatorio1progr3
                         {
                             case 0:
                                 break;
+
                             case 1:
                                 Console.WriteLine("Ver préstamos");
+                                foreach (Rental r in rentController.ListRentals())
+                                {
+                                    Console.WriteLine($"{r.Id}: '{r.Book.Title}', prestado a {r.Client.Name}, desde {r.StartDate} hasta {r.EndDate}. Estado: {(r.Returned ? "devuelto" : "no devuelto")}.");
+                                }
                                 Options();
                                 break;
+
                             case 2:
                                 Console.WriteLine("Alta préstamo");
+                                rentController.CreateRental();
                                 Options();
                                 break;
+
                             case 3:
                                 Console.WriteLine("Modificar préstamo");
+                                rentController.EditReturn();
                                 Options();
                                 break;
+
                             case 4:
                                 Console.WriteLine("Eliminar préstamo");
+                                rentController.DeleteRental();
                                 Options();
                                 break;
+
+                            case 9:
+                                Console.WriteLine("Gracias por utilizar nuestro sistema :)");
+                                switchInLoop = false;
+                                break;
+
+                            default:
+                                Console.WriteLine("Opción inválida");
+                                break;
                         }
-                        Options();
                         break;
                     #endregion
 
