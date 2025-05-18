@@ -34,5 +34,6 @@ namespace obligatorio1progr3.Domain
             this.endDate = pEndDate;
             this.returned = pReturned;
         }
+
     }
 }

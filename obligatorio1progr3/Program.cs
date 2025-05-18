@@ -107,7 +107,7 @@ namespace obligatorio1progr3
                     case 2:
                         Console.WriteLine("Libros");
                         Console.WriteLine("Seleccione una opción: ");
-                        Console.WriteLine("1: Ver libros | 2: Alta libro | 3: Modificar libro | 4: Eliminar libro " + basicOptions);
+                        Console.WriteLine("1: Ver libros | 2: Alta libro | 3: Modificar libro | 4: Eliminar libro | 5: Ordenar libros | " + basicOptions);
                         optionValue = int.Parse(Console.ReadLine());
 
                         Controller aController = new Controller();
@@ -156,6 +156,33 @@ namespace obligatorio1progr3
                                 Options();
                                 break;
 
+                            case 5:
+                                Console.WriteLine("Ordenar libros por año de publicación.");
+                                Console.WriteLine("1: Orden ascendente | 2: Orden descendente");
+                                int orderChoice = int.Parse(Console.ReadLine());
+                                switch (orderChoice)
+                                {
+                                    case 1:
+                                        Console.WriteLine("Orden ascendente");
+                                        foreach(Book b in aController.OrderBooks(0))
+                                        {
+                                            Console.WriteLine($"{b.Id}: '{b.Title}', {b.Author}, {b.Year}.");
+                                        }
+
+                                        break;
+                                    
+                                    case 2:
+                                        Console.WriteLine("Orden descendente");
+                                        foreach (Book b in aController.OrderBooks(1))
+                                        {
+                                            Console.WriteLine($"{b.Id}: '{b.Title}', {b.Author}, {b.Year}.");
+                                        }
+                                        break;
+
+                                    default: Console.WriteLine("Opción incorrecta");
+                                        break;
+                                }
+                                break;
                             case 9:
                                 Console.WriteLine("Gracias por utilizar nuestro sistema :)");
                                 switchInLoop = false;
@@ -343,7 +370,7 @@ namespace obligatorio1progr3
                         Console.WriteLine("Préstamos");
                         Controller rentController = new Controller();
                         Console.WriteLine("Seleccione una opción: ");
-                        Console.WriteLine("1: Ver préstamos | 2: Alta préstamo | 3: Modificar préstamo | 4: Eliminar préstamo | " + basicOptions);
+                        Console.WriteLine("1: Ver préstamos | 2: Alta préstamo | 3: Modificar préstamo | 4: Eliminar préstamo | 5: Ver fecha de devoluciones |  " + basicOptions);
                         optionValue = int.Parse(Console.ReadLine());
 
                         switch (optionValue)
@@ -355,7 +382,7 @@ namespace obligatorio1progr3
                                 Console.WriteLine("Ver préstamos");
                                 foreach (Rental r in rentController.ListRentals())
                                 {
-                                    Console.WriteLine($"{r.Id}: '{r.Book.Title}', prestado a {r.Client.Name}, desde {r.StartDate} hasta {r.EndDate}. Estado: {(r.Returned ? "devuelto" : "no devuelto")}.");
+                                    Console.WriteLine($"{r.Id}: '{r.Book.Title}', prestado a {r.Client.Name}, desde {r.StartDate.ToShortDateString()} hasta {r.EndDate.ToShortDateString()}. Estado: {(r.Returned ? "devuelto" : "no devuelto")}.");
                                 }
                                 Options();
                                 break;
@@ -378,6 +405,11 @@ namespace obligatorio1progr3
                                 Options();
                                 break;
 
+                            case 5:
+                                Console.WriteLine("Ver fecha de devoluciones");
+                                Console.WriteLine($"Faltan {rentController.GetEndDate()} días para la fecha de devolución.");
+                                Options();
+                                break;
                             case 9:
                                 Console.WriteLine("Gracias por utilizar nuestro sistema :)");
                                 switchInLoop = false;

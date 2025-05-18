@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -294,6 +295,19 @@ namespace obligatorio1progr3
             }
         }
 
+        public List<Book> OrderBooks(int i)
+        {
+            List<Book> li = ListBooks();
+            if(i == 0)
+            {
+                li.Sort((x, y) => x.Year.CompareTo(y.Year));
+            }
+            if(i == 1)
+            {
+                li.Sort((x, y) => y.Year.CompareTo(x.Year));
+            }
+            return li;
+        }
 
         #endregion
 
@@ -656,7 +670,7 @@ namespace obligatorio1progr3
 
             if (r != null)
             {
-                Console.WriteLine($"Id: {r.Id}: '{r.Book.Title}' prestado a {r.Client.Name}, desde {r.StartDate} hasta {r.EndDate}. Estado: {(r.Returned ? "devuelto" : "no devuelto")}.");
+                Console.WriteLine($"Id: {r.Id}: '{r.Book.Title}' prestado a {r.Client.Name}, desde {r.StartDate.ToShortDateString()} hasta {r.EndDate.ToShortDateString()}. Estado: {(r.Returned ? "devuelto" : "no devuelto")}.");
                 Console.WriteLine("¿Eliminar préstamo?");
                 Console.WriteLine("1. Confirmar | 2. Cancelar");
                 if (int.Parse(Console.ReadLine()) == 1)
@@ -727,6 +741,17 @@ namespace obligatorio1progr3
             }
             Console.WriteLine("Préstamo no existe");
             return false;
+        }
+
+        public int GetEndDate()
+        {
+            Console.WriteLine("Ingrese id del préstamo.");
+            Rental r = FindRental(Convert.ToInt32(Console.ReadLine()));
+            Console.WriteLine("Datos del préstamo.");
+            Console.WriteLine($"{r.Id}: '{r.Book.Title}', {r.Book.Author}. Prestado a {r.Client.Name}, el {r.StartDate.ToShortDateString()} hasta {r.EndDate.ToShortDateString()}");
+            TimeSpan dateDiff = r.EndDate.Subtract(DateTime.Now);
+            int daysDiff = dateDiff.Days; 
+            return daysDiff;
         }
 
         #endregion
