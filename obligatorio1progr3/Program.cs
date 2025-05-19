@@ -57,7 +57,7 @@ namespace obligatorio1progr3
 
                         Controller clientController = new Controller();
                         Console.WriteLine("Seleccione una opción: ");
-                        Console.WriteLine("1: Ver usuarios | 2: Alta usuario | 3: Eliminar usuario | " + basicOptions);
+                        Console.WriteLine("1: Ver usuarios | 2: Alta usuario | 3: Eliminar usuario | 4: Modificar usuario | " + basicOptions);
                         int optionValue = int.Parse(Console.ReadLine());
 
                         switch (optionValue)
@@ -121,6 +121,12 @@ namespace obligatorio1progr3
                                 Options();
                                 break;
 
+                            case 4:
+                                Console.WriteLine("Modificar usuario");
+
+                                clientController.UpdateClient();
+                                Options();
+                                break;
                             case 9:
                                 Console.WriteLine("Gracias por utilizar nuestro sistema :)");
                                 switchInLoop = false;

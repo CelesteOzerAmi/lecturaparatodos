@@ -20,7 +20,7 @@ namespace obligatorio1progr3
 
         public List<Client> ListClients()
         {
-            List<Client> clients = new List<Client>();
+            List<Client> clients = new List<Client>(); 
             foreach (Senior s in PSenior.Listar()) {
                 clients.Add(new Client(s.Id, s.Name, s.Mail, s.PhoneNumber, s.Subsidiary, "Senior"));
             }
@@ -144,6 +144,97 @@ namespace obligatorio1progr3
                 return false;
             }
             Console.WriteLine("Usuario no existe");
+            return false;
+        }
+
+        public bool UpdateClient()
+        {
+            Console.WriteLine("Ingrese tipo de cliente");
+            Console.WriteLine("1: Adulto | 2: Niño | 3: Jubilado");
+            int option = int.Parse(Console.ReadLine());
+            Console.WriteLine("Ingrese id");
+            int id = int.Parse(Console.ReadLine());
+            if(option == 1)
+            {
+                Adult a = PAdult.conseguir(id);
+                if(a != null)
+                {
+                    Console.WriteLine($"{a.Name}, {a.PhoneNumber}. Registrado en {a.Subsidiary.Name}.");
+                    Console.WriteLine("Editar campos");
+                    Console.WriteLine("Nombre");
+                    a.Name = Console.ReadLine();
+                    Console.WriteLine("Teléfono");
+                    a.PhoneNumber = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Mail");
+                    a.Mail = Console.ReadLine();
+                    if (PAdult.modificar(a))
+                    {
+                        Console.WriteLine("Modificado con éxito");
+                        return true;
+                    }
+                    Console.WriteLine("Error al modificar");
+                    return false;
+                }
+                Console.WriteLine("Adulto no existe");
+                return false;
+            }
+            if(option == 2)
+            {
+                Child a = PChild.conseguir(id);
+                if (a != null)
+                {
+                    Console.WriteLine($"{a.Name}, {a.PhoneNumber}. Registrado en {a.Subsidiary.Name}.");
+                    Console.WriteLine("Editar campos");
+                    Console.WriteLine("Nombre");
+                    a.Name = Console.ReadLine();
+                    Console.WriteLine("Teléfono");
+                    a.PhoneNumber = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Mail");
+                    a.Mail = Console.ReadLine();
+                    Console.WriteLine("Autorizado por adulto?");
+                    Console.WriteLine("1: Sí | 2: No");
+                    int auth = int.Parse(Console.ReadLine());
+                    a.Authorized = false;
+                    if (auth == 1)
+                    {
+                        a.Authorized = true;
+                    }
+                    if (PChild.modificar(a))
+                    {
+                        Console.WriteLine("Modificado con éxito");
+                        return true;
+                    }
+                    Console.WriteLine("Error al modificar");
+                    return false;
+                }
+                Console.WriteLine("Niño no existe");
+                return false;
+            }
+            if(option == 3)
+            {
+                Senior a = PSenior.Conseguir(id);
+                if (a != null)
+                {
+                    Console.WriteLine($"{a.Name}, {a.PhoneNumber}. Registrado en {a.Subsidiary.Name}.");
+                    Console.WriteLine("Editar campos");
+                    Console.WriteLine("Nombre");
+                    a.Name = Console.ReadLine();
+                    Console.WriteLine("Teléfono");
+                    a.PhoneNumber = int.Parse(Console.ReadLine());
+                    Console.WriteLine("Mail");
+                    a.Mail = Console.ReadLine();
+                    if (PSenior.Modificar(a))
+                    {
+                        Console.WriteLine("Modificado con éxito");
+                        return true;
+                    }
+                    Console.WriteLine("Error al modificar");
+                    return false;
+                }
+                Console.WriteLine("Jubilado no existe");
+                return false;
+            }
+            Console.WriteLine("Opción incorrecta");
             return false;
         }
         #endregion

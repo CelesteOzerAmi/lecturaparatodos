@@ -176,8 +176,8 @@ namespace obligatorio1progr3.Persistence
 
                 SqlParameter[] parametros =
                 {
-            new SqlParameter("@subId", SqlDbType.Int) { Value = subId }
-        };
+                    new SqlParameter("@subId", SqlDbType.Int) { Value = subId }
+                };
 
                 DataSet ds = Conexion.Seleccion(sql, parametros);
 

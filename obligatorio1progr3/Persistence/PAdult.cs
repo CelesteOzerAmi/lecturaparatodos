@@ -57,7 +57,7 @@ namespace obligatorio1progr3.Persistence
             }
         }
 
-        public static string modificar(Adult a)
+        public static bool modificar(Adult a)
         {
             try
             {
@@ -73,13 +73,14 @@ namespace obligatorio1progr3.Persistence
                 };
 
                 if (Conexion.Consulta(sql, parametros))
-                    return "Adult updated successfully";
+                    return true;
 
-                return "Error updating adult";
+                return false;
             }
             catch (Exception e)
             {
-                return $"Error updating adult: {e.Message}";
+                Console.WriteLine(e.ToString());
+                return false;
             }
         }
 

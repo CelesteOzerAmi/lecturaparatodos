@@ -58,7 +58,7 @@ namespace obligatorio1progr3.Persistence
             }
         }
 
-        public static string Modificar(Senior s)
+        public static bool Modificar(Senior s)
         {
             try
             {
@@ -75,13 +75,13 @@ namespace obligatorio1progr3.Persistence
                 };
 
                 if (Conexion.Consulta(sql, parametros))
-                    return "Senior updated successfully";
+                    return true;
 
-                return "Error updating senior";
+                return false;
             }
             catch (Exception e)
             {
-                return $"Error updating senior: {e.Message}";
+                return false;
             }
         }
 

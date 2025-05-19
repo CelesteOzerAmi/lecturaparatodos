@@ -58,7 +58,7 @@ namespace obligatorio1progr3.Persistence
             }
         }
 
-        public static string modificar(Child c)
+        public static bool modificar(Child c)
         {
             try
             {
@@ -75,13 +75,13 @@ namespace obligatorio1progr3.Persistence
                 };
 
                 if (Conexion.Consulta(sql, parametros))
-                    return "Child updated successfully";
+                    return true;
 
-                return "Error updating child";
+                return false;
             }
             catch (Exception e)
             {
-                return $"Error updating child: {e.Message}";
+                return false;
             }
         }
 
