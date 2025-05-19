@@ -167,5 +167,45 @@ namespace obligatorio1progr3.Persistence
                 return Books;
             }
         }
+        public static List<Book> GetBookBySubsidiary(int subId)
+        {
+            List<Book> books = new List<Book>();
+            try
+            {
+                string sql = "SELECT * FROM Book WHERE subsidiaryId = @subId";
+
+                SqlParameter[] parametros =
+                {
+            new SqlParameter("@subId", SqlDbType.Int) { Value = subId }
+        };
+
+                DataSet ds = Conexion.Seleccion(sql, parametros);
+
+                foreach (DataRow dr in ds.Tables[0].Rows)
+                {
+                    Controller c = new Controller();
+                    Genre g = c.FindGenre(Convert.ToInt32(dr["genreId"]));
+                    Subsidiary s = c.FindSubsidiary(Convert.ToInt32(dr["subsidiaryId"]));
+                    bool available = Convert.ToInt32(dr["available"]) == 1;
+
+                    books.Add(new Book(
+                        Convert.ToInt32(dr["id"]),
+                        dr["title"].ToString(),
+                        dr["author"].ToString(),
+                        g,
+                        Convert.ToInt32(dr["bookYear"]),
+                        s,
+                        available
+                    ));
+                }
+
+                return books;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error", e.ToString());
+                return books;
+            }
+        }
     }
 }

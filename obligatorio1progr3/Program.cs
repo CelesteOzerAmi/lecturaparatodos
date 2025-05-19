@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using obligatorio1progr3.Domain;
+using obligatorio1progr3.Persistence;
 
 namespace obligatorio1progr3
 {
@@ -65,13 +66,42 @@ namespace obligatorio1progr3
                                 break;
 
                             case 1:
-                                Console.WriteLine("Usuarios añadidos");
-
-                                foreach (Client aclient in clientController.ListClients())
+                                Console.WriteLine("1: Ver todos | 2: Ver adultos | 3: Ver niños | 4: Ver jubilados | " + basicOptions);
+                                int userFilter = int.Parse(Console.ReadLine());
+                                switch (userFilter)
                                 {
-                                    Console.WriteLine($"Usuario {aclient.Id}: {aclient.Name}, {aclient.PhoneNumber}. Registrado en {aclient.Subsidiary.Name}. Tipo de usuario {aclient.Type}");
-                                }                                
-                                Options();
+                                    case 1:
+                                        Console.WriteLine("Usuarios añadidos");
+
+                                        foreach (Client aclient in clientController.ListClients())
+                                        {
+                                            Console.WriteLine($"Usuario {aclient.Id}: {aclient.Name}, {aclient.PhoneNumber}. Registrado en {aclient.Subsidiary.Name}. Tipo de usuario {aclient.Type}");
+                                        }
+                                        Options();
+                                        break;
+                                    case 2:
+                                        Console.WriteLine("Adultos");
+
+                                        foreach (Adult padult in PAdult.listar())
+                                        {
+                                            Console.WriteLine($"Usuario {padult.Id}: {padult.Name}, {padult.PhoneNumber}. Registrado en {padult.Subsidiary.Name}. Tipo de usuario Adulto");
+                                        }
+                                        break;
+                                    case 3:
+                                        Console.WriteLine("Niños");
+                                        foreach (Child child in PChild.listar())
+                                        {
+                                            Console.WriteLine($"Usuario {child.Id}: {child.Name}, {child.PhoneNumber}. Registrado en {child.Subsidiary.Name}. Tipo de usuario Niño");
+                                        }
+                                        break;
+                                    case 4:
+                                        Console.WriteLine("Jubilados");
+
+                                        foreach (Senior senior in PSenior.Listar()) {
+                                            Console.WriteLine($"Usuario {senior.Id}: {senior.Name} ,  {senior.PhoneNumber}. Registrado en {senior.Subsidiary.Name}. Tipo de usuario Jubilado");
+                                        }
+                                        break;
+                                }
                                 break;
 
                             case 2:
@@ -107,7 +137,7 @@ namespace obligatorio1progr3
                     case 2:
                         Console.WriteLine("Libros");
                         Console.WriteLine("Seleccione una opción: ");
-                        Console.WriteLine("1: Ver libros | 2: Alta libro | 3: Modificar libro | 4: Eliminar libro | 5: Ordenar libros | " + basicOptions);
+                        Console.WriteLine("1: Ver libros | 2: Alta libro | 3: Modificar libro | 4: Eliminar libro | 5: Ordenar libros | 6: Libros por sucursal |" + basicOptions);
                         optionValue = int.Parse(Console.ReadLine());
 
                         Controller aController = new Controller();
@@ -182,6 +212,20 @@ namespace obligatorio1progr3
                                     default: Console.WriteLine("Opción incorrecta");
                                         break;
                                 }
+                                break;
+                            case 6:
+                                Console.WriteLine("Sucursales:");
+                                foreach (Subsidiary sub in PSubsidiary.ListSubsidiaries())
+                                {
+                                    Console.WriteLine($"Sucursal {sub.Id}: {sub.Name}, Ciudad: {sub.City}. Dirección: {sub.Address}. Número: {sub.Number}");
+                                }
+                                Console.WriteLine("Seleccione sucursal por ID");
+                                int subChoice = int.Parse(Console.ReadLine());
+                                foreach(Book book in PBook.GetBookBySubsidiary(subChoice))
+                                {
+                                    Console.WriteLine($"Libro {book.Id}: {book.Title}, Autor: {book.Author}. Año: {book.Year}.");
+                                }
+
                                 break;
                             case 9:
                                 Console.WriteLine("Gracias por utilizar nuestro sistema :)");
